@@ -1,8 +1,8 @@
 /* Листок: офлайн-кэш. Версия меняется при каждой сборке, старый кэш удаляется. */
-const VERSION = 'listok-e428b11bcf';
+const VERSION = 'listok-5b08d0e14a';
 const CORE = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png'];
 const LIBS = [];
-const FONT_CSS = "https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&family=Golos+Text:wght@400;500;600;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;0,7..72,700;1,7..72,400&display=swap";
+const FONT_CSS = "https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&family=Golos+Text:wght@400;500;600;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;0,7..72,700;1,7..72,400&family=PT+Sans:ital,wght@0,400;0,700;1,400&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Montserrat:ital,wght@0,400;0,600;0,700;1,400&family=Comfortaa:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Marck+Script&family=Bad+Script&family=Neucha&family=Amatic+SC:wght@400;700&family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&display=swap";
 self.addEventListener('install', e => {
   e.waitUntil((async () => {
     const c = await caches.open(VERSION);
@@ -12,7 +12,9 @@ self.addEventListener('install', e => {
       const r = await fetch(FONT_CSS, { mode: 'cors' });
       if (r.ok) {
         const css = await r.clone().text(); await c.put(FONT_CSS, r);
-        const urls = [...css.matchAll(/url\((https:[^)]+)\)/g)].map(m => m[1]);
+        // only the Cyrillic and Latin parts of each font (the label of a block is the comment just before it)
+        const parts = css.split('@font-face'), urls = [];
+        for (let i = 1; i < parts.length; i++) { const m = /\/\*\s*([\w-]+)\s*\*\/\s*$/.exec(parts[i - 1]); if (m && /^(vietnamese|greek|greek-ext|math|symbols)$/.test(m[1])) continue; for (const u of parts[i].matchAll(/url\((https:[^)]+)\)/g)) urls.push(u[1]); }
         await Promise.all(urls.map(u => fetch(u, { mode: 'cors' }).then(x => x.ok && c.put(u, x)).catch(() => {})));
       }
     } catch (err) {}
