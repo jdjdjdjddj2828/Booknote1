@@ -1,5 +1,5 @@
 /* Листок: офлайн-кэш. Версия меняется при каждой сборке, старый кэш удаляется. */
-const VERSION = 'listok-5b08d0e14a';
+const VERSION = 'listok-6b39d5c1f5';
 const CORE = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png'];
 const LIBS = [];
 const FONT_CSS = "https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&family=Golos+Text:wght@400;500;600;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;0,7..72,700;1,7..72,400&family=PT+Sans:ital,wght@0,400;0,700;1,400&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Montserrat:ital,wght@0,400;0,600;0,700;1,400&family=Comfortaa:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Marck+Script&family=Bad+Script&family=Neucha&family=Amatic+SC:wght@400;700&family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&display=swap";
